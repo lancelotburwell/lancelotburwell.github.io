@@ -9,7 +9,7 @@ function setRandomPosition(element) {
 
     // Calculate random position
     const randomX = Math.random() * (viewportWidth - imgWidth);
-    const randomY = Math.random() * (1.5*viewportHeight - imgHeight);
+    const randomY = Math.random() * (1.5 * viewportHeight - imgHeight);
 
     // Set position
     element.style.left = `${randomX}px`;
@@ -23,6 +23,10 @@ function makeElementDraggable(element) {
         e.preventDefault();
         mouseX = e.clientX;
         mouseY = e.clientY;
+
+        // Change to full opacity when dragging starts
+        element.style.opacity = "1";
+
         document.onmousemove = dragElement;
         document.onmouseup = stopDragging;
     };
@@ -40,21 +44,33 @@ function makeElementDraggable(element) {
     function stopDragging() {
         document.onmousemove = null;
         document.onmouseup = null;
+
+        // Revert to 60% transparency when dragging stops
+        element.style.opacity = "0.6";
     }
 }
 
-
 function toggleFullscreen(event) {
     const element = event.target;
-    element.classList.toggle('fullscreen');
+    const isFullscreen = element.classList.toggle('fullscreen');
+
+    // Set full opacity if entering fullscreen, else set it back to 60%
+    if (isFullscreen) {
+        element.style.opacity = "1";
+    } else {
+        element.style.opacity = "0.6";
+    }
 }
 
-// Apply random positions and make elements draggable
-window.onload = function() {
+// Apply random positions, make elements draggable, and handle opacity
+window.onload = function () {
     const draggableElements = document.querySelectorAll('.draggable');
     draggableElements.forEach(el => {
         setRandomPosition(el);
         makeElementDraggable(el);
         el.ondblclick = toggleFullscreen; // Add double-click event listener
+
+        // Set default opacity to 60%
+        el.style.opacity = "0.6";
     });
 };

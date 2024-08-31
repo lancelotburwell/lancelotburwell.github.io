@@ -17,6 +17,8 @@ body {
     height: auto;
     cursor: grab; /* Indicates draggable element */
     z-index: 1;
+    opacity: 0.5; /* Set default opacity to 70% */
+    transition: opacity 0.5s ease; /* Smooth transition for opacity changes */
 }
 
 .draggable.fullscreen {
@@ -46,7 +48,7 @@ h1 {
     color: black;
     margin-bottom: 10px;
     font-size: 48px;
-
+    user-select: none; /* Prevents text selection */
 }
 
 button {
