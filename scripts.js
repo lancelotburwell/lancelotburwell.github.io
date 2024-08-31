@@ -6,7 +6,7 @@ function setRandomPosition(element) {
 
     // Calculate random position
     const randomX = Math.random() * (viewportWidth - imgWidth);
-    const randomY = Math.random() * (1.5 * viewportHeight - imgHeight);
+    const randomY = Math.random() * (2 * viewportHeight - imgHeight);
 
     // Set position
     element.style.left = `${randomX}px`;
