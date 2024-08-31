@@ -1,6 +1,3 @@
-// scripts.js
-
-
 function setRandomPosition(element) {
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
@@ -17,36 +14,64 @@ function setRandomPosition(element) {
 }
 
 function makeElementDraggable(element) {
-    let posX = 0, posY = 0, mouseX = 0, mouseY = 0;
+    let posX = 0, posY = 0, startX = 0, startY = 0;
 
-    element.onmousedown = function (e) {
+    // Event listeners for mouse events
+    element.onmousedown = startDragging;
+    element.ontouchstart = startDragging; // Added for mobile
+
+    function startDragging(e) {
         e.preventDefault();
-        mouseX = e.clientX;
-        mouseY = e.clientY;
 
-        // Change to full opacity when dragging starts
+        // Check if it's a touch event or mouse event
+        if (e.type === "touchstart") {
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+            document.ontouchmove = dragElement;
+            document.ontouchend = stopDragging;
+        } else {
+            startX = e.clientX;
+            startY = e.clientY;
+            document.onmousemove = dragElement;
+            document.onmouseup = stopDragging;
+        }
+
+        // Set full opacity when dragging starts
         element.style.opacity = "1";
-
-        document.onmousemove = dragElement;
-        document.onmouseup = stopDragging;
-    };
+    }
 
     function dragElement(e) {
         e.preventDefault();
-        posX = mouseX - e.clientX;
-        posY = mouseY - e.clientY;
-        mouseX = e.clientX;
-        mouseY = e.clientY;
+
+        let currentX, currentY;
+
+        // Check if it's a touch event or mouse event
+        if (e.type === "touchmove") {
+            currentX = e.touches[0].clientX;
+            currentY = e.touches[0].clientY;
+        } else {
+            currentX = e.clientX;
+            currentY = e.clientY;
+        }
+
+        posX = startX - currentX;
+        posY = startY - currentY;
+        startX = currentX;
+        startY = currentY;
+
         element.style.top = (element.offsetTop - posY) + "px";
         element.style.left = (element.offsetLeft - posX) + "px";
     }
 
     function stopDragging() {
+        // Reset event listeners
         document.onmousemove = null;
         document.onmouseup = null;
+        document.ontouchmove = null;
+        document.ontouchend = null;
 
-        // Revert to 60% transparency when dragging stops
-        element.style.opacity = "0.6";
+        // Revert to 70% transparency when dragging stops
+        element.style.opacity = "0.7";
     }
 }
 
@@ -54,11 +79,11 @@ function toggleFullscreen(event) {
     const element = event.target;
     const isFullscreen = element.classList.toggle('fullscreen');
 
-    // Set full opacity if entering fullscreen, else set it back to 60%
+    // Set full opacity if entering fullscreen, else set it back to 70%
     if (isFullscreen) {
         element.style.opacity = "1";
     } else {
-        element.style.opacity = "0.6";
+        element.style.opacity = "0.7";
     }
 }
 
@@ -70,7 +95,7 @@ window.onload = function () {
         makeElementDraggable(el);
         el.ondblclick = toggleFullscreen; // Add double-click event listener
 
-        // Set default opacity to 60%
-        el.style.opacity = "0.6";
+        // Set default opacity to 70%
+        el.style.opacity = "0.7";
     });
 };
