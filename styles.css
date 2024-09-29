@@ -16,6 +16,11 @@ body {
     height: 281px;
 }
 
+#video2 {
+    width: 500px;
+    height: 281px;
+}
+
 .draggable {
     position: absolute; /* Allows free movement within the viewport */
     width: 300px; /* Set a default size */
