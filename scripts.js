@@ -70,10 +70,15 @@ function makeElementDraggable(element) {
         document.ontouchmove = null;
         document.ontouchend = null;
 
-        // Revert to 70% transparency when dragging stops
-        element.style.opacity = "0.7";
+        // Check if the element is in fullscreen mode
+        if (!element.classList.contains('fullscreen')) {
+            // Revert to 70% transparency when dragging stops for small images
+            element.style.opacity = "0.7";
+        }
     }
 }
+
+    
 
 function toggleFullscreen(event) {
     const element = event.target;
