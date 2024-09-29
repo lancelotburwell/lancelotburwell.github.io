@@ -11,6 +11,11 @@ body {
     z-index: 0; /* Ensures it's below the main content */
 }
 
+#video1 {
+    width: 500px;
+    height: 281px;
+}
+
 .draggable {
     position: absolute; /* Allows free movement within the viewport */
     width: 300px; /* Set a default size */
