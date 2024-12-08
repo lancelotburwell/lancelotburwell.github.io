@@ -150,9 +150,140 @@ function exitFullscreen() {
 
         fullscreenElement.style.opacity = "0.7"; // Reset opacity to 0.7 after exiting fullscreen
         fullscreenElement.style.zIndex = 1; // Reset z-index after exiting fullscreen
+        fullscreenElement.style.position = 'absolute';
+
     }
     hideOverlay();
 }
+
+function getDominantColor(image) {
+    return new Promise((resolve) => {
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        canvas.width = image.width;
+        canvas.height = image.height;
+
+        // Draw the image onto the canvas
+        context.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+        // Get pixel data
+        const imageData = context.getImageData(0, 0, canvas.width, canvas.height).data;
+
+        let r = 0, g = 0, b = 0, totalPixels = 0;
+
+        // Loop through pixels and average their RGB values
+        for (let i = 0; i < imageData.length; i += 4) {
+            r += imageData[i];     // Red
+            g += imageData[i + 1]; // Green
+            b += imageData[i + 2]; // Blue
+            totalPixels++;
+        }
+
+        // Average the RGB values
+        r = Math.floor(r / totalPixels);
+        g = Math.floor(g / totalPixels);
+        b = Math.floor(b / totalPixels);
+
+        resolve({ r, g, b });
+    });
+}
+
+// sort by color, light to dark
+function sortImagesByBrightness() {
+    const container = document.querySelector('.draggable-container');
+    const elements = Array.from(container.querySelectorAll('.draggable'));
+
+    // Separate images and videos
+    const images = elements.filter(el => el.tagName === 'IMG');
+    const videos = elements.filter(el => el.tagName !== 'IMG'); // Non-image elements
+
+    // Extract dominant colors and sort images
+    Promise.all(
+        images.map((img) =>
+            getDominantColor(img).then((color) => ({
+                img,
+                brightness: 0.299 * color.r + 0.587 * color.g + 0.114 * color.b, // Brightness formula
+            }))
+        )
+    ).then((results) => {
+        // Sort images from light to dark based on brightness
+        results.sort((a, b) => a.brightness - b.brightness);
+
+        // Rearrange images and preserve videos
+        container.innerHTML = ''; // Clear the container
+        results.forEach(({ img }) => container.appendChild(img)); // Append sorted images
+        videos.forEach(video => container.appendChild(video)); // Append videos back
+    });
+}
+
+function rgbToHue({ r, g, b }) {
+    r /= 255; g /= 255; b /= 255; // Normalize RGB values to 0–1
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    let hue;
+
+    if (max === min) {
+        hue = 0; // No color
+    } else if (max === r) {
+        hue = ((g - b) / (max - min) + 6) % 6;
+    } else if (max === g) {
+        hue = ((b - r) / (max - min) + 2) % 6;
+    } else {
+        hue = ((r - g) / (max - min) + 4) % 6;
+    }
+
+    return Math.round(hue * 60); // Convert to degrees (0–360)
+}
+
+function sortImagesByHue() {
+    const container = document.querySelector('.draggable-container');
+    const elements = Array.from(container.querySelectorAll('.draggable'));
+
+    // Separate images and videos
+    const images = elements.filter(el => el.tagName === 'IMG');
+    const videos = elements.filter(el => el.tagName !== 'IMG'); // Non-image elements
+
+    // Extract dominant colors and sort images
+    Promise.all(
+        images.map((img) =>
+            getDominantColor(img).then((color) => ({
+                img,
+                hue: rgbToHue(color), // Convert dominant color to hue
+            }))
+        )
+    ).then((results) => {
+        // Sort images by hue (red to violet)
+        results.sort((a, b) => a.hue - b.hue);
+
+        // Rearrange images and preserve videos
+        container.innerHTML = ''; // Clear the container
+        results.forEach(({ img }) => container.appendChild(img)); // Append sorted images
+        videos.forEach(video => container.appendChild(video)); // Append videos back
+    });
+}
+
+
+function sortImagesBySize() {
+    const container = document.querySelector('.draggable-container');
+    const images = Array.from(container.querySelectorAll('.draggable')).filter(el => el.tagName === 'IMG');
+
+    // Extract image sizes and sort images
+    const results = images.map(img => ({
+        img,
+        area: img.naturalWidth * img.naturalHeight, // Calculate area (width * height)
+    }));
+
+    // Sort images by size (ascending or descending)
+    results.sort((a, b) => a.area - b.area); // Ascending order
+
+    // Debugging: Log sorted areas
+    console.log('Sorted by size (small to large):', results);
+
+    // Rearrange images in the container
+    container.innerHTML = ''; // Clear the container
+    results.forEach(({ img }) => container.appendChild(img)); // Append images in sorted order
+}
+
 
 // Allow exiting fullscreen with ESC key
 document.addEventListener('keydown', (e) => {
@@ -170,4 +301,23 @@ window.onload = function () {
         el.ondblclick = toggleFullscreen;
     });
 };
+
+document.getElementById('gridButton').addEventListener('click', () => {
+    const container = document.querySelector('.draggable-container');
+
+
+    // Reset inline styles for all images
+    const draggableElements = document.querySelectorAll('.draggable');
+    draggableElements.forEach(el => {
+        el.style.position = 'static';
+        //el.style.top = ''; // Clear any inline top
+        //el.style.left = ''; // Clear any inline left
+    });
+
+        // Show the "Sort by Color" button
+        document.getElementById('sortByColorButton').style.display = 'block';
+    });
+
+
+document.getElementById('sortByColorButton').addEventListener('click', sortImagesByBrightness);
 

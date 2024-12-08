@@ -8,18 +8,22 @@
 
     <!-- Container for draggable images -->
     <div class="draggable-container">
-        <img src="images/dragable/1.jpg" alt="Draggable Image 1" class="draggable" id="img1">
-        <img src="images/dragable/2.png" alt="Draggable Image 2" class="draggable" id="img2">
-        <img src="images/dragable/3.jpg" alt="Draggable Image 3" class="draggable" id="img3">
-        <img src="images/dragable/4.png" alt="Draggable Image 4" class="draggable" id="img4">
-        <img src="images/dragable/5.jpg" alt="Draggable Image 5" class="draggable" id="img5">
-        <img src="images/dragable/6.jpg" alt="Draggable Image 6" class="draggable" id="img6">
-        <img src="images/dragable/7.png" alt="Draggable Image 7" class="draggable" id="img7">
-        <img src="images/dragable/8.jpg" alt="Draggable Image 8" class="draggable" id="img8">
-        <img src="images/dragable/9.jpg" alt="Draggable Image 9" class="draggable" id="img9">
-        <img src="images/dragable/10.png" alt="Draggable Image 10" class="draggable" id="img10">
-        <img src="images/dragable/11.jpg" alt="Draggable Image 11" class="draggable" id="img11">
-
+        <img src="images/dragable/1.jpg" alt="Image 1" class="draggable">
+        <img src="images/dragable/2.png" alt="Image 2" class="draggable">
+        <img src="images/dragable/3.jpg" alt="Image 3" class="draggable">
+        <img src="images/dragable/4.png" alt="Image 4" class="draggable">
+        <img src="images/dragable/5.jpg" alt="Image 5" class="draggable">
+        <img src="images/dragable/6.jpg" alt="Image 6" class="draggable">
+        <img src="images/dragable/7.png" alt="Image 7" class="draggable">
+        <img src="images/dragable/8.jpg" alt="Image 8" class="draggable">
+        <img src="images/dragable/9.jpg" alt="Image 9" class="draggable">
+        <img src="images/dragable/10.png" alt="Image 10" class="draggable">
+        <img src="images/dragable/11.jpg" alt="Image 11" class="draggable">
+        <img src="images/dragable/12.jpg" alt="Image 12" class="draggable">
+        <img src="images/dragable/13.png" alt="Image 13" class="draggable">
+        <img src="images/dragable/14.jpg" alt="Image 14" class="draggable">
+        <img src="images/dragable/15.jpg" alt="Image 15" class="draggable">
+        
              <!--allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" -->
              <!-- YouTube video as a draggable element -->
         <iframe src="https://www.youtube.com/embed/VAgRHVHezDQ?controls=0&modestbranding=1&rel=0&iv_load_policy=3" 
@@ -41,9 +45,12 @@
         <button onclick="window.location.href='mailto:lancelot.burwell@gmail.com';">email</button>
     </div>
 
-    <!-- Button for randomizing positions -->
-    <div class="randomize-button" onclick="initializeRandomPositions()">random</div>
-
+    <div class="top-right-buttons">
+        <div class="button" id="randomizeButton" onclick="initializeRandomPositions()">random</div>
+        <div class="button" id="gridButton">grid</div>
+        <div class="button" id="sortByColorButton" style = "display: none;">color</div>
+    </div>
+    
     <!-- Other content of your page -->
     <div class="draggable-container">
         <!-- Your draggable images here -->

@@ -11,8 +11,8 @@ body {
 }
 
 #video1, #video2 {
-    width: 500px;
-    height: 281px;
+    width: 300px;
+    height: 281/(500/300)px;
 }
 
 
@@ -28,8 +28,9 @@ body {
     transition: opacity 0.5s ease, transform 0.3s ease;
 }
 
-
-
+.draggable:hover {
+    opacity: 1; /* Full opacity on hover */
+}
 
 .draggable.fullscreen {
     position: fixed;
@@ -92,16 +93,38 @@ button:hover {
     background-color: #45a049;
 }
 
-.randomize-button {
+/* Container for buttons in the top-right */
+.top-right-buttons {
     position: fixed;
     top: 10px;
     right: 10px;
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    align-items: flex-end; /* Align buttons to the right */
+    gap: 10px; /* Space between buttons */
+    z-index: 10; /* Ensure it stays above other content */
+}
+
+/* Button styles */
+.button {
     font-family: Consolas, 'Courier New', monospace;
     font-size: 24px;
     color: black;
     cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
 }
 
-.randomize-button:hover {
-    color: #fe0404;
+.button:hover {
+    color: #ff0000;
 }
+
+.draggable-container {
+    display: grid; /* Enable grid layout */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Flexible grid columns */
+    gap: 10px; /* Spacing between items */
+    grid-auto-rows: auto; /* Automatically size rows based on image dimensions */
+    justify-content: center; /* Center the grid within the container */
+    align-items: center; /* Align items to the top of their cells */
+}
+
