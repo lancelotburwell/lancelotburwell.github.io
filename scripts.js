@@ -110,6 +110,7 @@ function toggleFullscreen(event) {
         element.style.left = '';
         element.style.zIndex = '';
         element.style.opacity = '';
+        element.style.position = '';
         showOverlay();
     } else {
         exitFullscreen();
