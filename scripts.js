@@ -87,13 +87,10 @@ function makeElementDraggable(element) {
         document.ontouchmove = null;
         document.ontouchend = null;
 
-        // If not fullscreen, revert to 70%
-        if (!element.classList.contains('fullscreen')) {
-            element.style.opacity = "0.7";
-        }
-
         // Reset z-index after dragging
-        element.style.zIndex = 1;
+        element.style.zIndex = '';
+        element.style.opacity = '';
+
     }
 }
 
@@ -111,9 +108,8 @@ function toggleFullscreen(event) {
         // Clear inline positioning so the fullscreen class can center it
         element.style.top = '';
         element.style.left = '';
-        element.style.position = 'fixed';
-        element.style.zIndex = 9999; // Bring to front when fullscreen
-        element.style.opacity = "1";
+        element.style.zIndex = '';
+        element.style.opacity = '';
         showOverlay();
     } else {
         exitFullscreen();
@@ -148,9 +144,8 @@ function exitFullscreen() {
         fullscreenElement.style.top = fullscreenElement.dataset.originalTop || '0px';
         fullscreenElement.style.left = fullscreenElement.dataset.originalLeft || '0px';
 
-        fullscreenElement.style.opacity = "0.7"; // Reset opacity to 0.7 after exiting fullscreen
-        fullscreenElement.style.zIndex = 1; // Reset z-index after exiting fullscreen
-        fullscreenElement.style.position = 'absolute';
+        fullscreenElement.style.opacity = ''; 
+        fullscreenElement.style.zIndex = '';
 
     }
     hideOverlay();

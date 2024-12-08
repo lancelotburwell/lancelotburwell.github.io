@@ -19,7 +19,7 @@ body {
 
 /* Draggable elements */
 .draggable {
-    position: static;
+    position: fixed;
     width: 300px; /* Adjust as needed */
     height: auto;
     cursor: grab;
@@ -45,6 +45,7 @@ body {
     cursor: pointer; /* Since you likely won't drag in fullscreen mode */
     pointer-events: none;
     opacity: 1;
+    z-index: 9999; /* Ensure it's above everything else */
 }
 
 /* The dark overlay that appears behind fullscreen elements */
