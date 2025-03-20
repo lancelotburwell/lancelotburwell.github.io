@@ -19,13 +19,13 @@ body {
 
 /* Draggable elements */
 .draggable {
-    position: fixed;
+    position: absolute;
     width: 300px; /* Adjust as needed */
     height: auto;
     cursor: grab;
     z-index: 1;
     opacity: 0.7;
-    transition: opacity 0.5s ease, transform 0.3s ease;
+    transition: opacity 0.5s ease, transform 0.1s linear;
 }
 
 .draggable:hover {
@@ -48,6 +48,29 @@ body {
     z-index: 9999; /* Ensure it's above everything else */
 }
 
+/* Floating animation */
+@keyframes float {
+    0% {
+        transform: translate(0, 0);
+    }
+    25% {
+        transform: translate(20px, -20px); /* Increase movement */
+    }
+    50% {
+        transform: translate(-20px, 20px);
+    }
+    75% {
+        transform: translate(20px, 20px);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+.draggable.floating {
+    animation: float 60s ease-in-out infinite; /* Reduce duration for faster movement */
+}
+
 /* The dark overlay that appears behind fullscreen elements */
 .fullscreen-overlay {
     position: fixed;
@@ -55,7 +78,7 @@ body {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(109, 14, 76, 0.7);
+    background: rgba(255, 255, 255, .8);
     z-index: 9998; /* Just below the fullscreen element */
     cursor: pointer;
 }

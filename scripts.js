@@ -50,6 +50,8 @@ function makeElementDraggable(element) {
         element.style.zIndex = 999; // Bring to front while dragging
     }
 
+
+
     function dragElement(e) {
         e.preventDefault();
 
@@ -82,6 +84,8 @@ function makeElementDraggable(element) {
     }
 
     function stopDragging() {
+
+
         document.onmousemove = null;
         document.onmouseup = null;
         document.ontouchmove = null;
@@ -93,6 +97,61 @@ function makeElementDraggable(element) {
 
     }
 }
+
+function enableFloatingEffect() {
+    const draggableElements = document.querySelectorAll('.draggable');
+
+    draggableElements.forEach(el => {
+        el.style.position = 'absolute'; // Ensure the elements are positioned absolutely
+
+        // Set random initial positions
+        const documentWidth = document.documentElement.scrollWidth;
+        const documentHeight = document.documentElement.scrollHeight;
+        const randomX = Math.random() * (documentWidth - el.offsetWidth);
+        const randomY = Math.random() * (documentHeight - el.offsetHeight);
+        el.style.left = `${randomX}px`;
+        el.style.top = `${randomY}px`;
+
+        // Set random velocities for each element (slower movement)
+        const velocity = {
+            x: (Math.random() - 0.5) * 0.5, // Slower speed
+            y: (Math.random() - 0.5) * 0.5
+        };
+
+        // Function to move the element
+        function moveElement() {
+            const currentLeft = parseFloat(el.style.left);
+            const currentTop = parseFloat(el.style.top);
+
+            // Calculate new position
+            let newLeft = currentLeft + velocity.x;
+            let newTop = currentTop + velocity.y;
+
+            // Bounce off the edges of the scrollable document
+            if (newLeft <= 0 || newLeft >= documentWidth - el.offsetWidth) {
+                velocity.x *= -1; // Reverse X direction
+                newLeft = Math.max(0, Math.min(newLeft, documentWidth - el.offsetWidth));
+            }
+            if (newTop <= 0 || newTop >= documentHeight - el.offsetHeight) {
+                velocity.y *= -1; // Reverse Y direction
+                newTop = Math.max(0, Math.min(newTop, documentHeight - el.offsetHeight));
+            }
+
+            // Apply new position
+            el.style.left = `${newLeft}px`;
+            el.style.top = `${newTop}px`;
+
+            // Repeat the movement
+            requestAnimationFrame(moveElement);
+        }
+
+        // Start the movement
+        moveElement();
+    });
+}
+
+// Call the function after the DOM is fully loaded
+document.addEventListener("DOMContentLoaded", enableFloatingEffect);
 
 function toggleFullscreen(event) {
     const element = event.target;
@@ -147,6 +206,7 @@ function exitFullscreen() {
 
         fullscreenElement.style.opacity = ''; 
         fullscreenElement.style.zIndex = '';
+        fullscreenElement.style.position = 'absolute';
 
     }
     hideOverlay();
